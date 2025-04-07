@@ -1,10 +1,15 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { Button } from "antd";
+import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
 
 export default function Home() {
+  // listQuestionBankVoByPageUsingPost({}).then((res) => {
+  //   console.log(res);
+  // });
   return (
     <main className={styles.main}>
+
       <Button type="primary">测试 Button</Button>
       <div className={styles.description}>
         <p>
