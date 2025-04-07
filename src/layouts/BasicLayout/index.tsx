@@ -19,6 +19,10 @@ import Link from 'next/link';
 import GlobalFooter from '@/components/GlobalFooter';
 import "./index.css";
 import menus from '../../../config/menus';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/stores';
+import getAccessibleMenus from '@/access/menuAccess';
+
 
 /**
  * 搜索框组件
@@ -60,6 +64,8 @@ const SearchInput = () => {
   );
 };
 
+
+
 //你给出的代码定义了一个名为 Props 的 TypeScript 接口，该接口包含一个 children 属性，
 //其类型为 React.ReactNode。这在 React 组件里是很常见的做法，用于允许组件接收子元素。
 interface Props {
@@ -70,7 +76,7 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   //获取页面地址
   const pathname = usePathname();
-
+  const loginUser = useSelector((state: RootState) => state.loginUser);
   return (
     <div
       id="basicLayout"
@@ -96,9 +102,9 @@ export default function BasicLayout({ children }: Props) {
 
         //头像区
         avatarProps={{
-          src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+          src: loginUser.userAvatar || 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
           size: 'small',
-          title: '七妮妮',
+          title: loginUser.userName || '七妮妮',
           render: (props, dom) => {
             return (
               <Dropdown
@@ -157,7 +163,7 @@ export default function BasicLayout({ children }: Props) {
         onMenuHeaderClick={(e) => console.log(e)}
         //定义有哪些菜单
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenus(loginUser, menus);
         }}
         //定义了菜单项如何渲染
         menuItemRender={(item, dom) => (
@@ -167,6 +173,7 @@ export default function BasicLayout({ children }: Props) {
           </Link>
         )}
       >
+
         {children}
       </ProLayout>
 
