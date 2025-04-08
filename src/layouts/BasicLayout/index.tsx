@@ -10,18 +10,22 @@ import {
 import {
   Dropdown,
   Input,
+  message,
   theme,
 } from 'antd';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { usePathname } from 'next/dist/client/components/navigation';
+import { usePathname, useRouter } from 'next/dist/client/components/navigation';
 import Link from 'next/link';
 import GlobalFooter from '@/components/GlobalFooter';
 import "./index.css";
 import menus from '../../../config/menus';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/stores';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/stores';
 import getAccessibleMenus from '@/access/menuAccess';
+import { userLogoutUsingPost } from '@/api/userController';
+import { setLoginUser } from '@/stores/loginUser';
+import { DEFAULT_USER } from '@/constants/user';
 
 
 /**
@@ -66,6 +70,8 @@ const SearchInput = () => {
 
 
 
+
+
 //你给出的代码定义了一个名为 Props 的 TypeScript 接口，该接口包含一个 children 属性，
 //其类型为 React.ReactNode。这在 React 组件里是很常见的做法，用于允许组件接收子元素。
 interface Props {
@@ -77,6 +83,30 @@ export default function BasicLayout({ children }: Props) {
   //获取页面地址
   const pathname = usePathname();
   const loginUser = useSelector((state: RootState) => state.loginUser);
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+  /**
+   * 用户注销
+   */
+  const userLogout = async () => {
+    try {
+      await userLogoutUsingPost();
+      message.success("已退出登录");
+      dispatch(setLoginUser(DEFAULT_USER));
+      router.push("/user/login");
+    } catch (e) {
+      let errorMessage = "注销失败";
+      if (e instanceof Error) {
+        errorMessage += ": " + e.message;
+      }
+      message.error(errorMessage);
+    }
+  }
+
+
+
+
+
   return (
     <div
       id="basicLayout"
@@ -106,6 +136,18 @@ export default function BasicLayout({ children }: Props) {
           size: 'small',
           title: loginUser.userName || '七妮妮',
           render: (props, dom) => {
+            //如果未登录
+            if (!loginUser.id) {
+              return (
+                <div
+                  onClick={() => {
+                    router.push("/user/login");
+                  }}
+                >
+                  {dom}
+                </div>
+              );
+            }
             return (
               <Dropdown
                 menu={{
@@ -116,6 +158,12 @@ export default function BasicLayout({ children }: Props) {
                       label: '退出登录',
                     },
                   ],
+                  onClick: async (event: { key: React.Key }) => {
+                    const { key } = event;
+                    if (key === "logout") {
+                      await userLogout();
+                    }
+                  }
                 }}
               >
                 {dom}
