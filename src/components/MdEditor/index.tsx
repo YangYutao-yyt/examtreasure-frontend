@@ -20,7 +20,8 @@ const MdEditor = (props: Props) => {
   return (
     <div className="md-editor">
       <Editor
-        value={value}
+        // 如果传进来的value为null，则变为空字符串
+        value={value || ""}
         placeholder={placeholder}
         mode="split"
         plugins={plugins}
