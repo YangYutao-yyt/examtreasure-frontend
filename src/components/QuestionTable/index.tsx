@@ -4,9 +4,11 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { ProTable } from "@ant-design/pro-components";
 import React, { useRef, useState } from "react";
 import TagList from "@/components/TagList";
-import { TablePaginationConfig } from "antd";
+import { TablePaginationConfig, message } from "antd";
 import Link from "next/link";
 import "./index.css";
+import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
+import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 
 interface Props {
   // 默认值（用于展示服务端渲染的数据）
@@ -14,6 +16,7 @@ interface Props {
   defaultTotal?: number;
   // 默认搜索条件
   defaultSearchParams?: API.QuestionQueryRequest;
+  errorMessage?: string | undefined;
 }
 
 /**
@@ -21,8 +24,11 @@ interface Props {
  *
  * @constructor
  */
-const QuestionTable: React.FC = (props: Props) => {
-  const { defaultQuestionList, defaultTotal, defaultSearchParams = {} } = props;
+const QuestionTable: React.FC<Props> = (props) => {
+  const { defaultQuestionList, defaultTotal, defaultSearchParams = {}, errorMessage = undefined } = props;
+  if (errorMessage) {
+    message.error(errorMessage)
+  }
   const actionRef = useRef<ActionType>();
   // 题目列表
   const [questionList, setQuestionList] = useState<API.QuestionVO[]>(
@@ -73,6 +79,7 @@ const QuestionTable: React.FC = (props: Props) => {
         search={{
           labelWidth: "auto",
         }}
+        //框里就默认有 defaultSearchParams，便于如果通过layouts里的搜索框搜索，跳转过来时框里会有默认值
         form={{
           initialValues: defaultSearchParams,
         }}
@@ -97,8 +104,9 @@ const QuestionTable: React.FC = (props: Props) => {
 
           const sortField = Object.keys(sort)?.[0] || "createTime";
           const sortOrder = sort?.[sortField] || "descend";
-
-          const { data, code } = await searchQuestionVoByPageUsingPost({
+          //如果改变条件后的客户端请求
+          //const { data, code } = await searchQuestionVoByPageUsingPost({
+          const { data, code } = await listQuestionVoByPageUsingPost({
             ...params,
             sortField,
             sortOrder,

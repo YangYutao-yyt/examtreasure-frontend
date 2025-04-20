@@ -26,47 +26,9 @@ import getAccessibleMenus from '@/access/menuAccess';
 import { userLogoutUsingPost } from '@/api/userController';
 import { setLoginUser } from '@/stores/loginUser';
 import { DEFAULT_USER } from '@/constants/user';
+import SearchInput from './components/SearchInput';
 
 
-/**
- * 搜索框组件
- * @returns 
- */
-const SearchInput = () => {
-  const { token } = theme.useToken();
-  return (
-    <div
-      key="SearchOutlined"
-      aria-hidden
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        marginInlineEnd: 24,
-      }}
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <Input
-        style={{
-          borderRadius: 4,
-          marginInlineEnd: 12,
-          backgroundColor: token.colorBgTextHover,
-        }}
-        prefix={
-          <SearchOutlined
-            style={{
-              color: token.colorTextLightSolid,
-            }}
-          />
-        }
-        placeholder="搜索题目"
-        variant="borderless"
-      />
-    </div>
-  );
-};
 
 
 
@@ -174,14 +136,14 @@ export default function BasicLayout({ children }: Props) {
         //操作区：可用于配置右侧的操作栏，比如搜索条、小按钮等。
         actionsRender={(props) => {
           if (props.isMobile) return [];
-          //key 被用于 SearchInput 和 a 元素，因为它们被包含在一个数组中，作为 actionsRender 函数返回的列表项。
-          //通过为它们设置唯一的 key，可以让 React 更高效地管理这些元素的渲染和更新，确保组件的行为符合预期。
+          const shouldShowSearch = !pathname.startsWith('/questions');
+
           return [
-            <SearchInput key="search" />,
+            shouldShowSearch && <SearchInput key="search" />,
             <a key="github" href="https://github.com/YangYutao-yyt/examtreasure-frontend" target="_blank">
               <GithubFilled key="GithubFilled" />
             </a>,
-          ];
+          ].filter(Boolean);
         }}
         // 标题渲染
         headerTitleRender={(logo, title, _) => {
