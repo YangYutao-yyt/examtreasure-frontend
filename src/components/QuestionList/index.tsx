@@ -7,7 +7,9 @@ import Item from "antd/es/list/Item";
 import TagList from "../TagList";
 
 interface Props {
+  questionBankId?: number;
   questionList: API.QuestionVO[],
+  cardTitle?: string,
   errorMessage: String | null
 }
 
@@ -16,7 +18,7 @@ interface Props {
  */
 const questionList = (props: Props) => {
 
-  const { questionList = [] } = props;
+  const { questionList = [], cardTitle, questionBankId } = props;
   const { errorMessage } = props;
   if (errorMessage) {
     message.error(errorMessage)
@@ -24,13 +26,13 @@ const questionList = (props: Props) => {
 
 
   return (
-    <Card className="question-list">
+    <Card className="question-list" title={cardTitle}>
       <List
         dataSource={questionList}
         renderItem={(item) => (
           <List.Item extra={<TagList tagList={item.tagList} />}>
             <List.Item.Meta title={
-              <Link href={`/question/${item.id}`}>
+              <Link href={questionBankId ? `/bank/${questionBankId}/question/${item.id}` : `/question/${item.id}`}>
                 {item.title}
               </Link>
             } />

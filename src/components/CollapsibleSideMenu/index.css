@@ -1,0 +1,48 @@
+/* 数字图标样式 */
+.number-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1890ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+}
+
+/* 菜单项样式 */
+.question-menu .ant-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 折叠状态下的菜单样式 */
+.collapsible-side-menu.ant-layout-sider-collapsed .number-icon {
+  margin: 0 auto;
+}
+
+/* 菜单标题样式 */
+.menu-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-title {
+  margin: 0 !important;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 折叠按钮样式 */
+.collapse-button {
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+}

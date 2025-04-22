@@ -1,0 +1,9 @@
+#bankQuestionPage {
+    width: 100%;
+}
+
+#bankQuestionPage .page-content {
+    padding: 24px;
+    min-height: calc(100vh - 48px);
+    overflow: auto;
+}

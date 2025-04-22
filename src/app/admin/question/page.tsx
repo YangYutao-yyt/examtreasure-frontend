@@ -13,6 +13,7 @@ import React, { useRef, useState } from "react";
 import './index.css';
 import TagList from "@/components/TagList";
 import MdEditor from "@/components/MdEditor";
+import UpdateBankModal from "./components/UpdateBankModal";
 
 /**
  * 题目管理页面
@@ -159,7 +160,7 @@ const QuestionAdminPage: React.FC = () => {
           <Typography.Link
             onClick={() => {
               setCurrentRow(record);
-              //setUpdateBankModalVisible(true);
+              setUpdateBankModalVisible(true);
             }}
           >
             修改所属题库
@@ -234,6 +235,13 @@ const QuestionAdminPage: React.FC = () => {
         }}
         onCancel={() => {
           setUpdateModalVisible(false);
+        }}
+      />
+      <UpdateBankModal
+        visible={updateBankModalVisible}
+        questionId={currentRow?.id}
+        onCancel={() => {
+          setUpdateBankModalVisible(false);
         }}
       />
     </PageContainer>
