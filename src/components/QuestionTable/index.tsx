@@ -8,7 +8,7 @@ import { TablePaginationConfig, message } from "antd";
 import Link from "next/link";
 import "./index.css";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
+import { listQuestionVoByPageUsingPost, searchQuestionVoByPageUsingPost } from "@/api/questionController";
 
 interface Props {
   // 默认值（用于展示服务端渲染的数据）
@@ -105,8 +105,8 @@ const QuestionTable: React.FC<Props> = (props) => {
           const sortField = Object.keys(sort)?.[0] || "createTime";
           const sortOrder = sort?.[sortField] || "descend";
           //如果改变条件后的客户端请求
-          //const { data, code } = await searchQuestionVoByPageUsingPost({
-          const { data, code } = await listQuestionVoByPageUsingPost({
+          const { data, code } = await searchQuestionVoByPageUsingPost({
+            //const { data, code } = await listQuestionVoByPageUsingPost({
             ...params,
             sortField,
             sortOrder,

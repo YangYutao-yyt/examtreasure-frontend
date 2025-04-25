@@ -2,7 +2,7 @@
 import {
   GithubFilled,
   LogoutOutlined,
-  SearchOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import {
   ProLayout
@@ -113,17 +113,25 @@ export default function BasicLayout({ children }: Props) {
             return (
               <Dropdown
                 menu={{
-                  items: [
+                  // 动态生成菜单项：只有登录用户可见
+                  items: loginUser.id ? [
+                    {
+                      key: 'userCenter',
+                      icon: <UserOutlined />,
+                      label: '个人中心',
+                    },
                     {
                       key: 'logout',
                       icon: <LogoutOutlined />,
                       label: '退出登录',
                     },
-                  ],
+                  ] : [],
                   onClick: async (event: { key: React.Key }) => {
                     const { key } = event;
                     if (key === "logout") {
                       await userLogout();
+                    } else if (key === "userCenter") {
+                      router.push("/user/center")
                     }
                   }
                 }}

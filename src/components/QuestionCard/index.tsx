@@ -3,7 +3,7 @@ import { Card, message, Button } from "antd";
 import Title from "antd/es/typography/Title";
 import TagList from "@/components/TagList";
 import MdViewer from "@/components/MdViewer";
-//import useAddUserSignInRecord from "@/hooks/useAddUserSignInRecord";
+import useAddUserSignInRecord from "@/hooks/useAddUserSignInRecord";
 import "./index.css";
 import { useState } from "react";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
@@ -28,7 +28,7 @@ const QuestionCard = (props: Props) => {
   const [showAnswer, setShowAnswer] = useState(false);
 
   // 签到
-  //useAddUserSignInRecord();
+  useAddUserSignInRecord();
 
   return (
     <div className="question-card">
