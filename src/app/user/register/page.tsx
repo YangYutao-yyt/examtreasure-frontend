@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 
 /**
  * 
- * 用户登录页面
+ * 用户注册页面
  * @constructor
  */
 

@@ -60,7 +60,11 @@ const BatchAddQuestionsToBankModal: React.FC<Props> = (props) => {
       });
       setQuestionBankList(res.data?.records ?? []);
     } catch (e) {
-      message.error("获取题库列表失败，" + e.message);
+      let errorMessage = '获取题库列表失败';
+      if (e instanceof Error) {
+        errorMessage += ', ' + e.message;
+      }
+      message.error(errorMessage);
     }
   };
 
